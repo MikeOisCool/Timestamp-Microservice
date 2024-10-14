@@ -21,13 +21,31 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/:apiDate", function (req, res) {
+app.get("/api/:apiDate?", function (req, res) {
   let apiDate = req.params.apiDate
-  let now = new Date();
+  let date;
+
+  if (!apiDate) {
+    date = new Date();
+  }
+  // Überprüfen, ob der apiDate ein gültiger Unix-Zeitstempel ist
+  else if (!isNaN(apiDate)) {
+    // Unix-Zeitstempel: parsest ihn
+    date = new Date(parseInt(apiDate));
+  } else {
+    // Andernfalls: versuche, einen regulären Datums-String zu parsen
+    date = new Date(apiDate);
+  }
+
+  // Fehlerbehandlung: wenn das Datum ungültig ist
+  if (isNaN(date.getTime())) {
+    return res.json({ error: "Invalid Date" });
+  }
+
 
   const dateObject = {
-    unix: now.getTime(),
-    utc: now.toUTCString()
+    unix: date.getTime(),
+    utc: date.toUTCString()
   }
 
   res.json(dateObject);
