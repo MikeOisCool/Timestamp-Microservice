@@ -5,7 +5,7 @@ while true; do
         echo "Kein Remote-Repository ist konfiguriert."
         read -p "Möchtest du das GitHub-Repository hinzufügen und den ersten Push durchführen? (j/n): " first_push
         if [[ "$first_push" == "j" ]]; then
-            git remote add origin https://github.com/MikeOisCool/Timestamp-Microservice.git
+            git remote set-url origin https://github.com/MikeOisCool/Timestamp-Microservice.git
             git branch -M main
             git add .
             git commit -m "Initial commit"
